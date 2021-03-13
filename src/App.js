@@ -1,25 +1,31 @@
-import logo from './logo.svg';
+import React from 'react';
+import { ChatEngine } from 'react-chat-engine';
 import './App.css';
+import ChatFeed from './components/ChatFeed';
+import LoginForm from './components/LoginForm';
+require('dotenv').config();
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+// Creating App as a functional component
+ const App = () => {
+       //If not logged 
+       if (!localStorage.getItem('username')) return <LoginForm />;
+
+      return (
+          //Adding the ChatEngine which is also a functional component
+          <ChatEngine 
+              height = '100vh'
+              //USE .env file to hide your important informations
+              projectID = {process.env.REACT_APP_PROJECTID}
+              userName={localStorage.getItem('username')}
+              userSecret={localStorage.getItem('password')}
+              //rendering our own chat feed using props from chatFeed
+              //Passing in all our chats as chatAppProps
+              //Creat a new ChatFeed component 
+              //And pass in our previous chats using the spread function
+              renderChatFeed={(chatAppProps) => <ChatFeed {...chatAppProps}/>}
+          />
+      )
 }
 
 export default App;
